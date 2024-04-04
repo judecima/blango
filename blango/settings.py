@@ -42,7 +42,7 @@ class Dev(Configuration):
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SAMESITE = 'None'
-
+    ADMINS = [("juliodecima", "juliodecima@gmail.com"), ("Leo Lucio", "juliodecima@gmail.com")]
 
     # Application definition
 
@@ -67,6 +67,46 @@ class Dev(Configuration):
         'django.contrib.messages.middleware.MessageMiddleware',
         #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     ]
+
+    LOGGING = {
+      "version": 1,
+      "disable_existing_loggers": False,
+      "filters": {
+          "require_debug_false": {
+              "()": "django.utils.log.RequireDebugFalse",
+          },
+      },
+      "formatters": {
+          "verbose": {
+              "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+              "style": "{",
+          },
+      },
+      "handlers": {
+          "console": {
+              "class": "logging.StreamHandler",
+              "stream": "ext://sys.stdout",
+              "formatter": "verbose",
+          },
+          "mail_admins": {
+              "level": "ERROR",
+              "class": "django.utils.log.AdminEmailHandler",
+              "filters": ["require_debug_false"],
+          },
+      },
+      "loggers": {
+          "django.request": {
+              "handlers": ["mail_admins"],
+              "level": "ERROR",
+              "propagate": True,
+          },
+      },
+      "root": {
+          "handlers": ["console"],
+          "level": "DEBUG",
+      },
+  }
+
 
     ROOT_URLCONF = 'blango.urls'
 
